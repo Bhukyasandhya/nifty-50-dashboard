@@ -4,11 +4,6 @@ A real-time Nifty 50 dashboard built using Next.js that displays simulated live 
 
 ---
 
-## 📸 Preview
-![Dashboard Screenshot](public/screenshot.png)
-
----
-
 ## 🚀 Live Demo
 🔗 https://nifty-50-dashboard-ruby.vercel.app
 
@@ -34,18 +29,9 @@ A real-time Nifty 50 dashboard built using Next.js that displays simulated live 
 
 ## ⚙️ How It Works
 - Fetches market data from `/api/market`  
-- Data refreshes every 5 seconds using `setInterval`  
+- Data refreshes every 5 seconds  
 - Clock updates every second  
-- UI dynamically renders stock prices and highlights changes  
-
----
-
-## 📁 Project Structure
-/app  
-  /api/market/route.ts → API for market data  
-  /page.tsx → Main dashboard UI  
-/public  
-  screenshot.png → Dashboard preview image  
+- UI dynamically renders stock prices  
 
 ---
 
@@ -66,10 +52,9 @@ Open: http://localhost:3000
 ---
 
 ## 💡 Future Improvements
-- Integrate real stock market API  
-- Add charts and graphs  
-- Add search and filtering  
-- Improve mobile responsiveness  
+- Integrate real stock API  
+- Add charts  
+- Add filters/search  
 
 ---
 
@@ -79,4 +64,4 @@ Bhukya Sandhya
 ---
 
 ## ⭐ Acknowledgement
-This project was built as part of an assignment to demonstrate real-time dashboard development using modern web technologies.
+This project was built as part of an assignment to demonstrate real-time dashboard development.
