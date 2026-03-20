@@ -21,35 +21,40 @@ export default function Home() {
   const [data, setData] = useState<MarketDataType | null>(null);
   const [lastUpdated, setLastUpdated] = useState("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch("/api/market", {
-          cache: "no-store",
-        });
+    useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const res = await fetch("/api/market", {
+        cache: "no-store",
+      });
 
-        if (!res.ok) {
-          console.error("API failed");
-          return;
-        }
-
-        const json = await res.json();
-        setData(json);
-
-        // ✅ update time
-        setLastUpdated(new Date().toLocaleTimeString());
-      } catch (err) {
-        console.error("Error fetching:", err);
+      if (!res.ok) {
+        console.error("API failed");
+        return;
       }
-    };
 
-    fetchData();
+      const json = await res.json();
+      setData(json);
+    } catch (err) {
+      console.error("Error fetching:", err);
+    }
+  };
 
-    // ✅ AUTO REFRESH every 5 sec
-    const interval = setInterval(fetchData, 5000);
+  fetchData();
 
-    return () => clearInterval(interval);
-  }, []);
+  // ✅ API refresh every 5 sec
+  const apiInterval = setInterval(fetchData, 5000);
+
+  // ✅ REAL TIME CLOCK every 1 sec
+  const timeInterval = setInterval(() => {
+    setLastUpdated(new Date().toLocaleTimeString());
+  }, 1000);
+
+  return () => {
+    clearInterval(apiInterval);
+    clearInterval(timeInterval);
+  };
+}, []);
 
   const nifty = data?.nifty;
   const stocks = data?.stocks || [];
