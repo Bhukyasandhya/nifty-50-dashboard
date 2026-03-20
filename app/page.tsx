@@ -19,30 +19,33 @@ type MarketDataType = {
 
 export default function Home() {
   const [data, setData] = useState<MarketDataType | null>(null);
-  const [lastUpdated, setLastUpdated] = useState<string>("");
+  const [lastUpdated, setLastUpdated] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-  try {
-    const res = await fetch("/api/market", {
-      cache: "no-store",
-    });
+      try {
+        const res = await fetch("/api/market", {
+          cache: "no-store",
+        });
 
-    if (!res.ok) {
-      console.error("API failed");
-      return;
-    }
+        if (!res.ok) {
+          console.error("API failed");
+          return;
+        }
 
-    const json = await res.json();
-    setData(json);
-  } catch (err) {
-    console.error("Error fetching:", err);
-  }
-};
+        const json = await res.json();
+        setData(json);
+
+        // ✅ update time
+        setLastUpdated(new Date().toLocaleTimeString());
+      } catch (err) {
+        console.error("Error fetching:", err);
+      }
+    };
 
     fetchData();
 
-    // ✅ AUTO REFRESH every 5 seconds
+    // ✅ AUTO REFRESH every 5 sec
     const interval = setInterval(fetchData, 5000);
 
     return () => clearInterval(interval);
@@ -58,13 +61,11 @@ export default function Home() {
         backgroundColor: "#0f172a",
         color: "white",
         padding: "20px",
-        fontFamily: "Arial, sans-serif",
       }}
     >
-      {/* HEADER */}
       <h1
         style={{
-          fontSize: "30px",
+          fontSize: "28px",
           marginBottom: "20px",
           fontWeight: "bold",
           textAlign: "center",
@@ -74,7 +75,7 @@ export default function Home() {
       </h1>
 
       {!nifty ? (
-        <p style={{ textAlign: "center" }}>Loading...</p>
+        <p>Loading...</p>
       ) : (
         <>
           {/* NIFTY CARD */}
@@ -82,10 +83,9 @@ export default function Home() {
             style={{
               backgroundColor: "#1e293b",
               padding: "20px",
-              borderRadius: "12px",
+              borderRadius: "10px",
               marginBottom: "20px",
               textAlign: "center",
-              boxShadow: "0 0 10px rgba(0,0,0,0.3)",
             }}
           >
             <h2 style={{ marginBottom: "10px" }}>{nifty.name}</h2>
@@ -100,9 +100,15 @@ export default function Home() {
               {nifty.price}
             </p>
 
-            {/* ✅ LAST UPDATED TIME */}
-            <p style={{ fontSize: "12px", marginTop: "10px", color: "#94a3b8" }}>
-              Updated at: {lastUpdated}
+            {/* ✅ TIME DISPLAY */}
+            <p
+              style={{
+                fontSize: "12px",
+                marginTop: "10px",
+                color: "#94a3b8",
+              }}
+            >
+              Updated at: {lastUpdated || "Loading..."}
             </p>
           </div>
 
@@ -111,8 +117,7 @@ export default function Home() {
             style={{
               backgroundColor: "#1e293b",
               padding: "20px",
-              borderRadius: "12px",
-              boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+              borderRadius: "10px",
             }}
           >
             <h3 style={{ marginBottom: "15px" }}>Top Stocks</h3>
@@ -124,11 +129,8 @@ export default function Home() {
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    padding: "12px 0",
-                    borderBottom:
-                      i !== stocks.length - 1
-                        ? "1px solid #334155"
-                        : "none",
+                    padding: "10px 0",
+                    borderBottom: "1px solid #334155",
                   }}
                 >
                   <span>{s.symbol}</span>
@@ -152,4 +154,4 @@ export default function Home() {
       )}
     </main>
   );
-} 
+}
