@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 export async function GET() {
   try {
     const res = await fetch(
@@ -12,13 +14,13 @@ export async function GET() {
 
     const data = await res.json();
 
-    const result = data.chart.result[0];
-    const price = result.meta.regularMarketPrice;
+    const result = data?.chart?.result?.[0];
+    const price = result?.meta?.regularMarketPrice;
 
-    return Response.json({
+    return NextResponse.json({
       nifty: {
         name: "NIFTY 50",
-        price: price,
+        price: price || 0,
       },
       stocks: [
         { symbol: "RELIANCE", price: 2900 },
@@ -38,10 +40,9 @@ export async function GET() {
         { symbol: "BAJFINANCE", price: 7000 },
       ],
     });
-
   } catch (error) {
-    return Response.json({
-      error: "Failed to fetch real data",
+    return NextResponse.json({
+      error: "Failed to fetch real market data",
     });
   }
 }
