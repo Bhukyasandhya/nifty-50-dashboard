@@ -5,7 +5,7 @@ A real-time Nifty 50 dashboard built using Next.js that displays simulated live 
 ---
 
 ## 📸 Preview
-![Dashboard Screenshot](./public/screenshot.png)
+![Dashboard Screenshot](public/screenshot.png)
 
 ---
 
