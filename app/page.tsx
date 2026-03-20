@@ -24,7 +24,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/market");
+        const res = await fetch(`${window.location.origin}/api/market`);
         const json = await res.json();
         setData(json);
 
