@@ -1,27 +1,47 @@
-import { NextResponse } from "next/server";
-
 export async function GET() {
-  return NextResponse.json({
-    nifty: {
-      name: "NIFTY 50",
-      price: 22485 + Math.floor(Math.random() * 100),
-    },
-    stocks: [
-      { symbol: "RELIANCE", price: 2900 + Math.floor(Math.random() * 100) },
-      { symbol: "TCS", price: 4100 + Math.floor(Math.random() * 100) },
-      { symbol: "INFY", price: 1600 + Math.floor(Math.random() * 100) },
-      { symbol: "HDFCBANK", price: 1700 + Math.floor(Math.random() * 100) },
-      { symbol: "ICICIBANK", price: 950 + Math.floor(Math.random() * 100) },
-      { symbol: "SBIN", price: 780 + Math.floor(Math.random() * 100) },
-      { symbol: "ITC", price: 430 + Math.floor(Math.random() * 50) },
-      { symbol: "LT", price: 3500 + Math.floor(Math.random() * 200) },
-      { symbol: "AXISBANK", price: 1100 + Math.floor(Math.random() * 100) },
-      { symbol: "WIPRO", price: 500 + Math.floor(Math.random() * 100) },
-      { symbol: "HCLTECH", price: 1400 + Math.floor(Math.random() * 100) },
-      { symbol: "MARUTI", price: 10000 + Math.floor(Math.random() * 200) },
-      { symbol: "TATASTEEL", price: 140 + Math.floor(Math.random() * 20) },
-      { symbol: "ONGC", price: 270 + Math.floor(Math.random() * 20) },
-      { symbol: "BAJFINANCE", price: 7000 + Math.floor(Math.random() * 200) },
-    ],
-  });
+  try {
+    const res = await fetch(
+      "https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI",
+      {
+        headers: {
+          "User-Agent": "Mozilla/5.0",
+        },
+        cache: "no-store",
+      }
+    );
+
+    const data = await res.json();
+
+    const result = data.chart.result[0];
+    const price = result.meta.regularMarketPrice;
+
+    return Response.json({
+      nifty: {
+        name: "NIFTY 50",
+        price: price,
+      },
+      stocks: [
+        { symbol: "RELIANCE", price: 2900 },
+        { symbol: "TCS", price: 4100 },
+        { symbol: "INFY", price: 1600 },
+        { symbol: "HDFCBANK", price: 1750 },
+        { symbol: "ICICIBANK", price: 1000 },
+        { symbol: "SBIN", price: 800 },
+        { symbol: "ITC", price: 450 },
+        { symbol: "LT", price: 3500 },
+        { symbol: "AXISBANK", price: 1100 },
+        { symbol: "WIPRO", price: 500 },
+        { symbol: "HCLTECH", price: 1400 },
+        { symbol: "MARUTI", price: 10000 },
+        { symbol: "TATASTEEL", price: 150 },
+        { symbol: "ONGC", price: 280 },
+        { symbol: "BAJFINANCE", price: 7000 },
+      ],
+    });
+
+  } catch (error) {
+    return Response.json({
+      error: "Failed to fetch real data",
+    });
+  }
 }
