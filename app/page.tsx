@@ -23,18 +23,22 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const res = await fetch(`${window.location.origin}/api/market`);
-        const json = await res.json();
-        setData(json);
+  try {
+    const res = await fetch("/api/market", {
+      cache: "no-store",
+    });
 
-        // ✅ Update time
-        const now = new Date();
-        setLastUpdated(now.toLocaleTimeString());
-      } catch (err) {
-        console.error(err);
-      }
-    };
+    if (!res.ok) {
+      console.error("API failed");
+      return;
+    }
+
+    const json = await res.json();
+    setData(json);
+  } catch (err) {
+    console.error("Error fetching:", err);
+  }
+};
 
     fetchData();
 
